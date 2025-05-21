@@ -22,4 +22,20 @@ class Appointment extends Model
         'patients_id',
         'notifications_id',
     ];
+
+    public function service(){
+        return $this->belongsTo(Service::class, 'services_id', 'service_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'users_id', 'user_id');
+    }
+
+    public function patient(){
+        return $this->belongsTo(Patient::class, 'patients_id', 'patient_id');
+    }
+
+    public function notification(){
+        return $this->belongsTo(Notification::class, 'notifications_id', 'notification_id');
+    }
 }
