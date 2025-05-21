@@ -94,6 +94,4 @@ class EventController extends Controller
     $inputEvent->delete();
     return redirect('dataevent')->with('success', 'User deleted');
 }
-
-
 }
