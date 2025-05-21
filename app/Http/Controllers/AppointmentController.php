@@ -125,7 +125,7 @@ class AppointmentController extends Controller
     {
       $appointment = Appointment::find($id);
 
-      if (!$$appointment) {
+      if (!$appointment) {
         return redirect('appointments')->with('error', 'Appointment not found');
       }
 
