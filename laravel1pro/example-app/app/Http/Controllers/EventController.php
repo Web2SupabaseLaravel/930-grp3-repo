@@ -30,7 +30,7 @@ class EventController extends Controller
     ]);
 
     $inputEvent = new \App\Models\users_accounts();
-    
+
     $inputEvent->user_id = $request->user_id;
     $inputEvent->name = $request->name;
     $inputEvent->email = $request->email;
@@ -68,7 +68,7 @@ class EventController extends Controller
     $request->validate([
         'user_id' => 'required',
         'name' => 'required',
-        'email' => 'required|email|unique:users_accounts,email,' . $id,
+        'email' => 'required|email|unique:users_accounts,email,' . $id . ',user_id',
         'password' => 'nullable|min:6',
         'role' => 'required'
     ]);

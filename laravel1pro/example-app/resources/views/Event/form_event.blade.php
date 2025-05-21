@@ -14,7 +14,7 @@
         </div>
     @endif
 
-    <form action="{{ route($route, isset($event->user_id) ? $event->user_id : null) }}" method="POST">
+    <form action="{{ is_array($route) ? route($route[0], $route[1]) : route($route) }}" method="POST">
         @csrf
         @if($method === 'put')
             @method('PUT')
