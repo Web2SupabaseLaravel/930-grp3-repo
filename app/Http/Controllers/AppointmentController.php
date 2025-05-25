@@ -8,12 +8,12 @@ use App\Models\Appointment;
 class AppointmentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of all appointments.
      */
    public function index()
 {
     $appointments = Appointment::all();
-    return view('appointment.index', compact('appointments'));
+    return view('appointment.index')->with('appointments', $appointments);
 }
 
 
