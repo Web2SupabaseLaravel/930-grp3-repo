@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\Restaurant;
+use App\Models\users_accounts;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 
-class EventController extends Controller
+class UserAccountController extends Controller
 {
     public function create()
     {
