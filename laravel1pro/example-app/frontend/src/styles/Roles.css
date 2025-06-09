@@ -1,0 +1,46 @@
+.table-row.header,
+.table-row {
+    display: grid;
+    grid-template-columns: 2fr 5fr 80px; /* الدور - الصلاحيات - الإجراءات */
+    padding: 12px;
+    border: 1.4px solid black;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    align-items: center;
+    background-color: white;
+    min-height: 48px;
+}
+
+.table-row.header {
+    background-color: #de5d58;
+    color: white;
+    font-weight: bold;
+    border-radius: 12px;
+    margin-bottom: 10px;
+}
+
+.table-row.alt-row {
+    background-color: #ececec;
+}
+
+.icon-cell {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    margin: 0;
+}
+
+.edit-btn {
+    color: #007bff;
+}
+
+.delete-btn {
+    color: #dc3545;
+}
