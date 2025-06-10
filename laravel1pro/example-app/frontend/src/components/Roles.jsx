@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "../styles/Roles.css";  // تأكد المسار صحيح حسب مشروعك
-
-// باقي الكود مثل ما شرحته لك سابقاً...
+import "../styles/Roles.css";
 
 
 export default function UsersGroupedByRole() {
-  const [users, setUsers] = useState({}); // تخزين البيانات مجمعة حسب الدور
+  const [users, setUsers] = useState({});
 
   useEffect(() => {
     fetchUsers();
