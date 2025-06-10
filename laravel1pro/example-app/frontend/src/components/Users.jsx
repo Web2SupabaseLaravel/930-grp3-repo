@@ -6,7 +6,7 @@ import axios from "axios";
 export default function Users() {
     const [users, setUsers] = useState([]);
     const [showModal, setShowModal] = useState(false);
-    const [mode, setMode] = useState("add"); // "add" or "edit"
+    const [mode, setMode] = useState("add");
     const [selectedUser, setSelectedUser] = useState(null);
     const [formData, setFormData] = useState({ name: '', email: '', password: '', role: '' });
 
