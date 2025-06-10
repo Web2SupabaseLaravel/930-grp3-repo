@@ -108,7 +108,9 @@ class AppointmentController extends Controller
             'status' => 'required',
             'services_id' => 'required',
             'users_id' => 'required',
-            'patients_id' => 'required'
+            'patients_id' => 'required',
+            'doctors_id' => 'required',
+            'specialties_id' => 'required'
        ]);
 
         $appointment = Appointment::find($id);

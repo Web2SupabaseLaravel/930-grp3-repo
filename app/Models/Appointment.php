@@ -23,6 +23,8 @@ class Appointment extends Model
         'users_id',
         'patients_id',
         'notifications_id',
+        'specialties_id',
+        'doctors_id',
     ];
 
     public function service(){
@@ -39,5 +41,13 @@ class Appointment extends Model
 
     public function notification(){
         return $this->belongsTo(Notification::class, 'notifications_id', 'notification_id');
+    }
+
+     public function doctors(){
+        return $this->belongsTo(Doctor::class, 'doctors_id', 'doctor_id');
+    }
+
+     public function specialties(){
+        return $this->belongsTo(Specialty::class, 'specialties_id', 'specialty_id');
     }
 }
