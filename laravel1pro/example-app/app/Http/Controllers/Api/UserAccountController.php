@@ -29,7 +29,6 @@ class UserAccountController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'user_id' => 'required',
             'email' => 'required|email|unique:users_accounts',
             'password' => 'required|min:6',
             'role' => 'required',
@@ -38,7 +37,6 @@ class UserAccountController extends Controller
 
         $inputEvent = new \App\Models\users_accounts();
 
-        $inputEvent->user_id = $request->user_id;
         $inputEvent->name = $request->name;
         $inputEvent->email = $request->email;
         $inputEvent->password = bcrypt($request->password);
@@ -69,7 +67,6 @@ class UserAccountController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'user_id' => 'required',
             'name' => 'required',
             'email' => 'required|email|unique:users_accounts,email,' . $id . ',user_id',
             'password' => 'nullable|min:6',
@@ -77,7 +74,6 @@ class UserAccountController extends Controller
         ]);
 
         $inputEvent = \App\Models\users_accounts::findOrFail($id);
-        $inputEvent->user_id = $request->user_id;
         $inputEvent->name = $request->name;
         $inputEvent->email = $request->email;
         if ($request->filled('password')) {

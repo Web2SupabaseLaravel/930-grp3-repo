@@ -1,64 +1,59 @@
-import React from "react";
-import { FaSearch, FaPlus, FaFilter, FaEdit, FaTrash } from "react-icons/fa";
-import "../styles/Users.css";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "../styles/Roles.css";  // تأكد المسار صحيح حسب مشروعك
 
-const roles = [
-    {
-        id: 1,
-        role: "Admin",
-        permissions: ["Add User", "Edit User", "Delete User"],
-    },
-    {
-        id: 2,
-        role: "Doctor",
-        permissions: ["View Patients"],
-    },
-    {
-        id: 3,
-        role: "Receptionist",
-        permissions: ["Add Patient", "Edit Appointment"],
-    },
-];
+// باقي الكود مثل ما شرحته لك سابقاً...
 
-export default function Roles() {
-    return (
-        <div className="patients-container">
 
-            {/* Header actions */}
-            <div className="patients-actions">
-                <div className="left-actions">
-                    <button className="btn orange-btn">
-                        <FaPlus /> <span>اضافة دور</span>
-                    </button>
-                    <button className="btn gray-btn">
-                        <FaFilter /> <span>فلتر</span>
-                    </button>
-                </div>
-                <div className="search-box">
-                    <FaSearch />
-                    <input type="text" placeholder="بحث..." />
-                </div>
-            </div>
+export default function UsersGroupedByRole() {
+  const [users, setUsers] = useState({}); // تخزين البيانات مجمعة حسب الدور
 
-            {/* Table */}
-            <div className="patients-table">
-                <div className="table-row header">
-                    <div>الدور</div>
-                    <div>الصلاحيات</div>
-                    <div>الإجراءات</div>
-                </div>
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
-                {roles.map((r, i) => (
-                    <div className={`table-row ${i % 2 === 1 ? 'alt-row' : ''}`} key={r.id}>
-                        <div>{r.role}</div>
-                        <div>{r.permissions.join(", ")}</div>
-                        <div className="icon-cell">
-                            <button className="icon-btn edit-btn"><FaEdit /></button>
-                            <button className="icon-btn delete-btn"><FaTrash /></button>
-                        </div>
-                    </div>
-                ))}
-            </div>
+  const fetchUsers = async () => {
+    try {
+      const res = await axios.get("http://localhost:8000/api/users");
+      const grouped = res.data.reduce((acc, user) => {
+        if (!acc[user.role]) acc[user.role] = [];
+        acc[user.role].push(user);
+        return acc;
+      }, {});
+      setUsers(grouped);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Users Grouped by Role</h2>
+      {Object.keys(users).length === 0 && <p>Loading users...</p>}
+
+      {Object.entries(users).map(([role, usersInRole]) => (
+        <div key={role} style={{ marginBottom: "20px" }}>
+          <h3>{role}</h3>
+          <table border="1" cellPadding="8" cellSpacing="0" width="100%">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>User ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              {usersInRole.map(user => (
+                <tr key={user.user_id}>
+                  <td>{user.name}</td>
+                  <td>{user.email}</td>
+                  <td>{user.user_id}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-    );
+      ))}
+    </div>
+  );
 }

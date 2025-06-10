@@ -1,46 +1,48 @@
-.table-row.header,
-.table-row {
-    display: grid;
-    grid-template-columns: 2fr 5fr 80px; /* الدور - الصلاحيات - الإجراءات */
-    padding: 12px;
-    border: 1.4px solid black;
-    border-radius: 6px;
-    margin-bottom: 20px;
-    align-items: center;
-    background-color: white;
-    min-height: 48px;
+/* UsersGrouped.css */
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-family: Arial, sans-serif;
+  color: #333;
 }
 
-.table-row.header {
-    background-color: #de5d58;
-    color: white;
-    font-weight: bold;
-    border-radius: 12px;
-    margin-bottom: 10px;
+h3 {
+  background-color: #f0f0f0;
+  padding: 10px 15px;
+  border-left: 5px solid #007bff;
+  font-family: Arial, sans-serif;
+  color: #007bff;
+  margin-bottom: 10px;
 }
 
-.table-row.alt-row {
-    background-color: #ececec;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  font-family: Arial, sans-serif;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.icon-cell {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+thead tr {
+  background-color: #007bff;
+  color: white;
 }
 
-.icon-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 18px;
-    margin: 0;
+thead th {
+  padding: 10px;
+  text-align: left;
 }
 
-.edit-btn {
-    color: #007bff;
+tbody tr:nth-child(odd) {
+  background-color: #f9f9f9;
 }
 
-.delete-btn {
-    color: #dc3545;
+tbody tr:hover {
+  background-color: #e6f0ff;
+}
+
+tbody td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
