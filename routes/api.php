@@ -1,13 +1,15 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthController; // ✅ صححنا المسار
+use App\Http\Controllers\Auth\AuthController;
 
-// مسارات تسجيل الدخول والتسجيل
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// المسارات المحمية بـ JWT middleware
+// مسارات تسجيل الدخول والتسجيل API
+
+
 Route::middleware('auth:api')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);

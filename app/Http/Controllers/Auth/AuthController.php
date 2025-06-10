@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
+    // المفتاح العام من Supabase (anon key)
+    private $apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhtZnhpbXhkY2ZpbW1uc2dpdXdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5NTE0NDEsImV4cCI6MjA2MTUyNzQ0MX0.PDnUhKy5ffq_Z0Ng2zH9Tt60BRZa3B9P8vl-MV6Mvso';
+
     public function showLoginForm()
     {
         return view('auth.login-supabase');
@@ -25,10 +28,9 @@ class AuthController extends Controller
         $password = $request->input('password');
 
         $authUrl = 'https://hmfximxdcfimmnsgiuwg.supabase.co/auth/v1/token?grant_type=password';
-        $apiKey = 'eyJhbGciOiJI...'; // ⚠️ تأكد من إبقائه سرياً
 
         $response = Http::withHeaders([
-            'apikey' => $apiKey,
+            'apikey' => $this->apiKey,
             'Content-Type' => 'application/json',
         ])->post($authUrl, [
             'email' => $email,
@@ -36,39 +38,69 @@ class AuthController extends Controller
         ]);
 
         if ($response->successful() && isset($response['access_token'])) {
+            // ممكن تخزن بيانات المستخدم بالسيشن لو بدك
             Session::put('user', $response->json());
-            return redirect()->route('dashboard');
+
+            return response()->json([
+                'message' => 'تم تسجيل الدخول بنجاح.',
+                'token' => $response['access_token'],
+                'user' => $response->json()
+            ], 200);
         }
 
-        return redirect()
-            ->route('login.supabase.form')
-            ->with('error', 'فشل تسجيل الدخول.');
+        return response()->json([
+            'error' => 'فشل تسجيل الدخول. تأكد من صحة البيانات.'
+        ], 401);
     }
 
     public function register(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|min:8|confirmed',
-        ]);
+{
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|email',
+        'password' => 'required|min:8|confirmed',
+    ]);
 
-        $apiKey = 'eyJhbGciOiJI...';
-        $registerUrl = 'https://hmfximxdcfimmnsgiuwg.supabase.co/auth/v1/signup';
+    $email = $request->input('email');
+    $password = $request->input('password');
+    $name = $request->input('name');
 
-        $response = Http::withHeaders([
-            'apikey' => $apiKey,
-            'Content-Type' => 'application/json',
-        ])->post($registerUrl, [
-            'email' => $request->email,
-            'password' => $request->password,
-        ]);
+    $apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhtZnhpbXhkY2ZpbW1uc2dpdXdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5NTE0NDEsImV4cCI6MjA2MTUyNzQ0MX0.PDnUhKy5ffq_Z0Ng2zH9Tt60BRZa3B9P8vl-MV6Mvso';
 
-        if ($response->successful()) {
-            return response()->json(['message' => 'تم التسجيل بنجاح.'], 201);
+    $registerUrl = 'https://hmfximxdcfimmnsgiuwg.supabase.co/auth/v1/signup';
+
+    $response = Http::withHeaders([
+        'apikey' => $apiKey,
+        'Content-Type' => 'application/json',
+    ])->post($registerUrl, [
+        'email' => $email,
+        'password' => $password,
+    ]);
+
+    if ($response->successful()) {
+        // ⬇️ بعد نجاح التسجيل، أضف الاسم إلى جدول users_accounts (أو profiles) في Supabase
+        $userId = $response->json()['user']['id'] ?? null;
+
+        if ($userId) {
+            Http::withHeaders([
+                'apikey' => $apiKey,
+                'Authorization' => 'Bearer ' . $apiKey,
+                'Content-Type' => 'application/json',
+            ])->post('https://hmfximxdcfimmnsgiuwg.supabase.co/rest/v1/users_accounts', [
+                'id' => $userId,
+                'full_name' => $name,
+                'email' => $email
+            ]);
         }
 
-        return response()->json(['error' => 'فشل التسجيل'], 422);
+        return response()->json(['message' => 'تم التسجيل بنجاح.'], 201);
     }
+
+    return response()->json([
+        'error' => $response->json()['msg'] ?? 'فشل التسجيل',
+        'details' => $response->json()
+    ], 422);
+}
 
     public function user(Request $request)
     {
