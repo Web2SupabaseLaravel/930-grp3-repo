@@ -72,7 +72,7 @@
 
 .table-row.header {
     display: grid;
-    grid-template-columns: repeat(4, 1fr) 120px; /* UserID, Name, Email, Role, Actions */
+    grid-template-columns: repeat(4, 1fr) 120px; 
     background-color: #1d4a98;
     color: white;
     font-weight: bold;
