@@ -1,0 +1,19 @@
+#submitdoctor{
+    margin-top: 2%;
+margin-left: 15%;
+background-color: #0584FF;
+}
+.inputDoctor:focus{
+     box-shadow: 0 0 8px 2px rgba(128, 128, 128, 0.6) !important;
+  border-color: 667085 !important;
+  outline: none;
+}
+
+
+.asideAdd{
+background-color: #0584FF;
+}
+.page{
+     margin-top: 5%;
+}
+
