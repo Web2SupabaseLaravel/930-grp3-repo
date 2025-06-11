@@ -17,7 +17,7 @@ class Service extends Model
     public $timestamps = false; 
 
     protected $fillable = [
-        'service_id',
+       
         'doctors_id',
         'service_name',
         'description',
