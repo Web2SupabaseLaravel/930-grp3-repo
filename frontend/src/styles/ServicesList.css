@@ -1,0 +1,44 @@
+.title {
+  color: #2c3e50;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-size: 28px;
+}
+
+.custom-add {
+  background: #28a745 !important;
+  color: #fff !important;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 8px;
+}
+ 
+.custom-edit {
+  background: #0677ef !important;
+  color: white !important;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+}
+
+.custom-delete {
+  background: #dc3545 !important;
+  color: white !important;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+}
+
+.custom-add:hover {
+  background-color: #2cc54f !important;
+}
+
+.custom-edit:hover {
+  background-color: #1d8aff !important;
+}
+
+.custom-delete:hover {
+  background-color: #ff3f52 !important;
+}

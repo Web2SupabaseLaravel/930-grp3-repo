@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AppointmentApiController;
+use App\Http\Controllers\ServiceController;
 
 Route::prefix('appointments')->group(function () {
     Route::get('/', [AppointmentApiController::class, 'index']);
@@ -15,3 +16,5 @@ Route::prefix('appointments')->group(function () {
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::apiResource('services', ServiceController::class);
