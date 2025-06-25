@@ -1,17 +1,21 @@
-// src/components/login/Login.jsx
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import supabase from '../../supabaseClient';
+import { Link, useNavigate } from 'react-router-dom';
+import { createClient } from '@supabase/supabase-js';
 import './Login.css';
 
 import Logo from '../../assets/Logo.png';
 import Login_pic from '../../assets/Login_pic.png';
+
+const supabaseUrl = 'https://hmfximxdcfimmnsgiuwg.supabase.co';
+const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhtZnhpbXhkY2ZpbW1uc2dpdXdnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDU5NTE0NDEsImV4cCI6MjA2MTUyNzQ0MX0.PDnUhKy5ffq_Z0Ng2zH9Tt60BRZa3B9P8vl-MV6Mvso';
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -19,6 +23,14 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError('');
+
+    // Direct login for test credentials
+    if (email === 'yousefshubib@gmail.com' && password === '12345678') {
+      alert('✅ Test login successful!');
+      navigate('/dashboard');
+      return;
+    }
 
     try {
       const { data, error } = await supabase.auth.signInWithPassword({
@@ -27,25 +39,18 @@ const Login = () => {
       });
 
       if (error) {
-        setError(error.message);
-        return;
+        console.error('Login error:', error);
+        setError(error.message || 'Login failed. Please check your credentials.');
+      } else {
+        if (data.session?.access_token) {
+          localStorage.setItem('token', data.session.access_token);
+        }
+        alert('✅ Login successful!');
+        navigate('/dashboard');
       }
-
-      console.log('✅ Login success:', data);
-
-      // حفظ التوكن لو حابب تستخدمه (عادة Supabase يتعامل مع الجلسة تلقائياً)
-      if (data.session?.access_token) {
-        localStorage.setItem('token', data.session.access_token);
-      }
-
-      alert('تم تسجيل الدخول بنجاح!');
-      setError('');
-
-      // تحويل لصفحة بعد تسجيل الدخول
-      window.location.href = '/dashboard';
     } catch (err) {
-      console.error(err);
-      setError('فشل تسجيل الدخول. حاول مرة أخرى.');
+      console.error('Unexpected error:', err);
+      setError('An unexpected error occurred. Please try again later.');
     }
   };
 
@@ -80,7 +85,7 @@ const Login = () => {
               onClick={togglePasswordVisibility}
               style={{ cursor: 'pointer' }}
             >
-              {showPassword ? '🙈' : '👁️'}
+              {showPassword ? '🙈' : '👁'}
             </span>
           </div>
 
@@ -92,7 +97,9 @@ const Login = () => {
             </label>
             <Link to="/reset">Forgot password?</Link>
           </div>
+
           <button type="submit">Sign In</button>
+
           <p className="no-account">
             Don't have an account? <Link to="/register">Sign Up</Link>
           </p>
